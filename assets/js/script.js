@@ -7,7 +7,7 @@ var tasksCompletedEl = document.querySelector("#tasks-completed");
 var pageContentEl = document.querySelector("#page-content");
 var tasks = [];
 
-var taskFormHandler = function(event) {
+var taskFormHandler = function (event) {
   event.preventDefault();
   var taskNameInput = document.querySelector("input[name='task-name']").value;
   var taskTypeInput = document.querySelector("select[name='task-type']").value;
@@ -39,7 +39,7 @@ var taskFormHandler = function(event) {
   }
 };
 
-var createTaskEl = function(taskDataObj) {
+var createTaskEl = function (taskDataObj) {
   var listItemEl = document.createElement("li");
   listItemEl.className = "task-item";
   listItemEl.setAttribute("data-task-id", taskIdCounter);
@@ -60,7 +60,7 @@ var createTaskEl = function(taskDataObj) {
   taskIdCounter++;
 };
 
-var createTaskActions = function(taskId) {
+var createTaskActions = function (taskId) {
   // create container to hold elements
   var actionContainerEl = document.createElement("div");
   actionContainerEl.className = "task-actions";
@@ -124,7 +124,7 @@ var completeEditTask = function (taskName, taskType, taskId) {
   formEl.querySelector("#save-task").textContent = "Add Task";
 };
 
-var taskButtonHandler = function(event) {
+var taskButtonHandler = function (event) {
   // get target element from event
   var targetEl = event.target;
 
@@ -167,7 +167,7 @@ var taskStatusChangeHandler = function (event) {
   }
 };
 
-var editTask = function(taskId) {
+var editTask = function (taskId) {
   console.log(taskId);
 
   // get task list item element
@@ -211,8 +211,18 @@ var deleteTask = function (taskId) {
   tasks = updatedTaskArr;
 
 };
-var saveTasks = function() {
+var saveTasks = function () {
   localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+var loadTasks = function () {
+  var savedTasks = localStorage.getItem("tasks");
+  if (!savedTasks) {
+    return false;
+  }
+  savedTasks = JSON.parse(savedTasks);
+  for (var i = 0; i < savedTasks.length; i++)
+  createTaskEl(savedTasks[i]);
 }
 // Create a new task
 formEl.addEventListener("submit", taskFormHandler);
@@ -222,3 +232,5 @@ pageContentEl.addEventListener("click", taskButtonHandler);
 
 // for changing the status
 pageContentEl.addEventListener("change", taskStatusChangeHandler);
+
+loadTasks();
